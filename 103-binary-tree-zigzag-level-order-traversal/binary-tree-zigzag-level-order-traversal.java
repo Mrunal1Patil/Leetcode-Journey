@@ -15,36 +15,37 @@
  */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        if(root==null){
-            return result;
-        }
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        boolean leftToRight = true;
-
-        while(!queue.isEmpty()){
-            int level = queue.size();
-            List<Integer> list = new ArrayList<>();
-            for(int i=0;i<level;i++){
-                TreeNode current = queue.poll();
-                if(leftToRight){
-                    list.add(current.val);
-                }
-                else{
-                    list.add(0,current.val);
-                }
-                if(current.left!=null){
-                    queue.offer(current.left);
-                }
-                 if(current.right!=null){
-                    queue.offer(current.right);
-                }
-               
-            }
-            result.add(list);
-             leftToRight=!leftToRight;
-        }
+       List<List<Integer>> result = new ArrayList<>();
+       if(root==null){
         return result;
+       }
+
+       Queue<TreeNode> queue = new LinkedList<>();
+       queue.offer(root);
+
+       boolean leftToRight = true;
+       while(!queue.isEmpty()){
+        int levelSize = queue.size();
+        List<Integer> list = new ArrayList<>();
+        for(int i=0;i<levelSize;i++){
+            TreeNode currentNode = queue.poll();
+            if(leftToRight){
+                    list.add(currentNode.val);
+            }
+            else{
+                     list.add(0,currentNode.val);
+            }
+            if(currentNode.left!=null){
+                queue.offer(currentNode.left);
+            }
+            if(currentNode.right!=null){
+                queue.offer(currentNode.right);
+            }
+          
+        }
+        result.add(list);
+        leftToRight=!leftToRight;
+       }
+       return result;
     }
 }
