@@ -5,16 +5,16 @@ class Solution {
         for(int i=0;i<n;i++){
             map.put(i,new ArrayList<>());
         }
-        
-        for(int[] edge: edges){
+
+        for(int[] edge : edges){
             int u = edge[0];
             int v = edge[1];
             map.get(u).add(v);
             map.get(v).add(u);
         }
 
-        Queue<Integer> queue = new LinkedList<>();
         Set<Integer> set = new HashSet<>();
+        Queue<Integer> queue = new LinkedList<>();
 
         queue.offer(source);
         set.add(source);
@@ -24,13 +24,13 @@ class Solution {
             if(node==destination){
                 return true;
             }
-            for(int nieghbor : map.get(node)){
-                if(!set.contains(nieghbor)){
-                    queue.offer(nieghbor);
-                    set.add(nieghbor);
+            for(int neighbor : map.get(node)){
+                if(!set.contains(neighbor)){
+                    set.add(neighbor);
+                    queue.offer(neighbor);
                 }
             }
-                    }
-                    return false;
+        }
+        return false;
     }
 }
