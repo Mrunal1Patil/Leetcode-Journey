@@ -1,54 +1,39 @@
 class Solution {
     public int countComponents(int n, int[][] edges) {
-        UnionFind uf = new UnionFind(n);
-        for(int i=0;i<edges.length;i++){
-            int edge[] = edges[i];
-            uf.union(edge[0],edge[1]);
-        }
-        Set<Integer> uniqueroots = new HashSet<>();
+        
+        Map<Integer, List<Integer>> map = new HashMap<>();
         for(int i=0;i<n;i++){
-            uniqueroots.add(uf.find(i));
+            map.put(i,new ArrayList<>());
+
         }
-        return uniqueroots.size();
-    }
-
-    class UnionFind{
-        int[] parent;
-        int[] rank;
-
-        public UnionFind(int n){
-            parent= new int[n];
-            rank = new int[n];
-
-            for(int i=0;i<n;i++){
-                parent[i]=i;
-                rank[i]=1;
-            }
-        }
-        public int find(int x){
-            if(parent[x]!=x){
-                parent[x]=find(parent[x]);
-            }
-            return parent[x];
-        }
-        public boolean union(int x, int y){
-            int rootX = find(x);
-            int rootY = find(y);
-
-            if(rootX==rootY){
-                return false;
-            }
-              if (rank[rootX] > rank[rootY]) {
-                parent[rootY] = rootX;
-            } else if (rank[rootX] < rank[rootY]) {
-                parent[rootX] = rootY;
-            } else {
-                parent[rootY] = rootX;
-                rank[rootX]++;
-            }
-
-            return true;
+        for(int[] edge:edges){
+            int u = edge[0];
+            int v = edge[1];
+            map.get(u).add(v);
+            map.get(v).add(u);
         }
 
+        Set<Integer> set = new HashSet<>();
+        int componentcount = 0;
+
+        for(int i=0;i<n;i++){
+            if(!set.contains(i)){
+                componentcount++;
+                Queue<Integer> queue = new LinkedList<>();
+                queue.offer(i);
+                set.add(i);
+
+                while(!queue.isEmpty()){
+                    int node = queue.poll();
+                    for(int niegb : map.get(node)){
+                        if(!set.contains(niegb)){
+                            set.add(niegb);
+                            queue.offer(niegb);
+                        }
+                    }
+                }
+            }
+        }
+        return componentcount;
     }
 }
